@@ -3,16 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/record_item_background"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ui_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/record_item_background"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -27,9 +30,9 @@
                 android:id="@+id/item_header_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="15dp"
+                android:padding="5dp"
                 android:text="Pasta recipe"
                 android:textColor="@color/white" />
 
@@ -37,9 +40,9 @@
                 android:id="@+id/item_createDate_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="15dp"
+                android:padding="5dp"
                 android:text="24/07"
                 android:textColor="@color/white" />
 
@@ -55,20 +58,50 @@
 
             <ImageButton
                 android:id="@+id/item_edit_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/ic_launcher_foreground"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/edit_record_24dp"
                 android:padding="5dp" />
 
             <ImageButton
                 android:id="@+id/item_open_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/ic_launcher_foreground"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/open_record_24dp"
                 android:padding="5dp" />
         </LinearLayout>
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/description_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_layout" />
+
+    <View
+        android:id="@+id/description_top_strip"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/description_layout"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/item_description_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:layout_marginTop="5dp"
+        android:minHeight="20dp"
+        android:maxHeight="50dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/description_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

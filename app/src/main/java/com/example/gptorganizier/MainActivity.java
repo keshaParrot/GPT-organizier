@@ -2,24 +2,36 @@ package com.example.gptorganizier;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gptorganizier.Menu.MenuManager;
+import com.example.gptorganizier.adapters.RecordAdapter;
 import com.example.gptorganizier.domain.Record;
-import com.example.gptorganizier.domain.TypeOfRecord;
+import com.example.gptorganizier.Menu.SideBarManager;
+import com.example.gptorganizier.service.ContentExchangeService;
 import com.example.gptorganizier.service.DatabaseService;
 import com.example.gptorganizier.service.GoogleAuthService;
+import com.google.android.material.navigation.NavigationView;
 
-import java.util.Date;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
-
+    private SideBarManager sideBarManager;
+    private MenuManager menuManager;
+    private RecordAdapter recordAdapter;
+    private DatabaseService db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +49,55 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean("isFirstLaunch", false);
         editor.apply();
 
-        DatabaseService dbService = DatabaseService.getInstance(this, GoogleAuthService.getCredential(this));
-        Record record = new Record(1L,
-                "test",
-                "test",
-                "test",
-                new Date(2000,2,2),
-                new Date(2000,2,2),
-                TypeOfRecord.PROMPT);
+        db = DatabaseService.getInstance(this,GoogleAuthService.getCredential(this));
+        List<Record> records = db.getAllPrompts();
 
-        //dbService.addRecord(record);
-        Log.i("MA", String.valueOf(dbService.getAllPrompts().get(0)));
+        menuManager = MenuManager.getInstance(this);
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        sideBarManager = new SideBarManager(this, drawerLayout, navigationView);
+        sideBarManager.updateMenu();
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recordAdapter = new RecordAdapter(records,new ContentExchangeService(this));
+        recyclerView.setAdapter(recordAdapter);
+
+        ImageButton openDrawerButton = findViewById(R.id.open_drawer_button);
+        openDrawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sideBarManager.openDrawer();
+            }
+        });
+        ImageButton newRecordButton = findViewById(R.id.create_record_button);
+        newRecordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuManager.showCreateRecordMenu();
+            }
+        });
     }
 
-    //TODO on destroy save database
+    public void loadPrompts() {
+        List<Record> prompts = db.getAllPrompts();
+        TextView recordTypeTextView = findViewById(R.id.record_type);
+        recordTypeTextView.setText("Prompts");
+        recordAdapter.updateList(prompts);
+    }
+    public void loadLinks() {
+        List<Record> links = db.getAllLinks();
+        TextView recordTypeTextView = findViewById(R.id.record_type);
+        recordTypeTextView.setText("Links");
+        recordAdapter.updateList(links);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (db != null) {
+            db.synchronizeDatabase();
+        }
+    }
 }

@@ -48,7 +48,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_SIGN_IN) {
-            GoogleAuthService.handleSignInResult(resultCode, data);
+            GoogleAuthService.handleSignInResult(resultCode, data,this);
             if (resultCode == RESULT_OK) {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);

@@ -13,6 +13,7 @@ import com.google.api.services.drive.model.FileList;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 
 public class GoogleDriveSyncService {
 
@@ -37,7 +38,6 @@ public class GoogleDriveSyncService {
         return instance;
     }
 
-    // Завантаження бази даних на Google Диск
     public void uploadDatabase(String databasePath) {
         java.io.File file = new java.io.File(databasePath);
         if (!file.exists()) {
@@ -59,26 +59,23 @@ public class GoogleDriveSyncService {
         }).start();
     }
 
-    // Завантаження бази даних з Google Диска
+
     public void downloadDatabase(String destinationPath) {
         new Thread(() -> {
             try {
-                // Пошук файлу за назвою на Google Диску
                 FileList result = driveService.files().list()
                         .setQ("name = 'my_database.db'")
                         .setSpaces("drive")
                         .setFields("files(id, name)")
                         .execute();
 
-                if (result.getFiles().size() > 0) {
+                if (!result.getFiles().isEmpty()) {
                     String fileId = result.getFiles().get(0).getId();
 
-                    // Отримання потоку з файла
                     InputStream inputStream = driveService.files().get(fileId).executeMediaAsInputStream();
 
-                    // Запис у локальний файл
                     java.io.File localFile = new java.io.File(destinationPath);
-                    OutputStream outputStream = new FileOutputStream(localFile);
+                    OutputStream outputStream = Files.newOutputStream(localFile.toPath());
 
                     byte[] buffer = new byte[1024];
                     int bytesRead;

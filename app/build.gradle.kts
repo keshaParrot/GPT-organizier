@@ -55,9 +55,12 @@ dependencies {
     //implementation(libs.google.api.services.drive)
     //implementation(libs.play.services.auth)
     //implementation(libs.okhttp)
-
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("com.google.android.material:material:1.6.0")
 
     implementation("androidx.cardview:cardview:1.0.0")
+    compileOnly("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("org.projectlombok:lombok:1.18.26")
 
     // Google Drive API
     implementation("com.google.api-client:google-api-client-android:1.32.1")

@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">GPT organizier</string>
+    <string name="prompt">Prompt</string>
+    <string name="link">Link</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="start_without_loggining_in">Start without Loggining in</string>
+    <string name="log_in">Log in</string>
+    <string name="links">Links</string>
+    <string name="log_out">Log Out</string>
+    <string name="type_of_record">type of record</string>
+    <string name="header">Header</string>
+    <string name="create_date">create date</string>
+
+    <string-array name="record_type_items">
+        <item>Prompt</item>
+        <item>Link</item>
+    </string-array>
+
+
 </resources>
