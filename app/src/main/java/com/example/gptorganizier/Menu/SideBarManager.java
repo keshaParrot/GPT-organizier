@@ -1,9 +1,12 @@
 package com.example.gptorganizier.Menu;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +24,7 @@ public class SideBarManager {
     private Context context;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private SharedPreferences sharedPreferences;
 
     Button loginButton;
     Button promptButton;
@@ -31,16 +35,18 @@ public class SideBarManager {
         this.context = context;
         this.drawerLayout = drawerLayout;
         this.navigationView = navigationView;
+        this.sharedPreferences = context.getSharedPreferences("AppPrefs", MODE_PRIVATE);
 
         setupDrawer();
     }
 
     private void setupDrawer() {
-
         loginButton = navigationView.findViewById(R.id.nav_login_button);
         promptButton = navigationView.findViewById(R.id.nav_prompt_button);
         linkButton = navigationView.findViewById(R.id.nav_link_button);
         logoutButton = navigationView.findViewById(R.id.nav_logout_button);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +58,9 @@ public class SideBarManager {
         promptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) context).loadPrompts();
+                editor.putBoolean("itemShowTypeLink", false);
+                editor.apply();
+                ((MainActivity) context).updateAdapter();
                 drawerLayout.closeDrawers();
             }
         });
@@ -60,7 +68,9 @@ public class SideBarManager {
         linkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) context).loadLinks();
+                editor.putBoolean("itemShowTypeLink", true);
+                editor.apply();
+                ((MainActivity) context).updateAdapter();
                 drawerLayout.closeDrawers();
             }
         });
@@ -88,13 +98,8 @@ public class SideBarManager {
     }
 
     public void updateMenu() {
-        loginButton.setVisibility(View.GONE);
-        logoutButton.setVisibility(View.GONE);
-
-        if (!GoogleAuthService.isLoggedIn()) {
-            loginButton.setVisibility(View.VISIBLE);
-        } else {
-            logoutButton.setVisibility(View.VISIBLE);
-        }
+        boolean isLoggedIn = GoogleAuthService.isLoggedIn();
+        loginButton.setVisibility(isLoggedIn ? View.GONE : View.VISIBLE);
+        logoutButton.setVisibility(isLoggedIn ? View.VISIBLE : View.GONE);
     }
 }

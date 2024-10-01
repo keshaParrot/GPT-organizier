@@ -1,6 +1,8 @@
 package com.example.gptorganizier.service;
 
 import android.util.Log;
+
+import com.example.gptorganizier.R;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -27,7 +29,7 @@ public class GoogleDriveSyncService {
                 new NetHttpTransport(),
                 JSON_FACTORY,
                 credential)
-                .setApplicationName("YourAppName")
+                .setApplicationName(String.valueOf(R.string.app_name))
                 .build();
     }
 

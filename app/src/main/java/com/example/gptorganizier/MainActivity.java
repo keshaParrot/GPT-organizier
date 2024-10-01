@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity{
     private MenuManager menuManager;
     private RecordAdapter recordAdapter;
     private DatabaseService db;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +45,15 @@ public class MainActivity extends AppCompatActivity{
             return insets;
         });
 
-        SharedPreferences preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isFirstLaunch", false);
+        editor.putBoolean("itemShowTypeLink", true);
         editor.apply();
 
         db = DatabaseService.getInstance(this,GoogleAuthService.getCredential(this));
-        List<Record> records = db.getAllPrompts();
+        //TODO change this
+        List<Record> records = db.getAllLinks();
 
         menuManager = MenuManager.getInstance(this);
 
@@ -63,6 +66,8 @@ public class MainActivity extends AppCompatActivity{
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recordAdapter = new RecordAdapter(records,new ContentExchangeService(this));
         recyclerView.setAdapter(recordAdapter);
+
+        changeRecordTypeHeader();
 
         ImageButton openDrawerButton = findViewById(R.id.open_drawer_button);
         openDrawerButton.setOnClickListener(new View.OnClickListener() {
@@ -79,18 +84,22 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+    public void updateAdapter() {
+        List<Record> records;
 
-    public void loadPrompts() {
-        List<Record> prompts = db.getAllPrompts();
-        TextView recordTypeTextView = findViewById(R.id.record_type);
-        recordTypeTextView.setText("Prompts");
-        recordAdapter.updateList(prompts);
+        boolean showTypeLink = preferences.getBoolean("itemShowTypeLink", false);
+
+        if(!showTypeLink) records = db.getAllPrompts();
+        else records = db.getAllLinks();
+
+        changeRecordTypeHeader();
+        recordAdapter.updateList(records);
     }
-    public void loadLinks() {
-        List<Record> links = db.getAllLinks();
+    public void changeRecordTypeHeader(){
         TextView recordTypeTextView = findViewById(R.id.record_type);
-        recordTypeTextView.setText("Links");
-        recordAdapter.updateList(links);
+        boolean showTypeLink = preferences.getBoolean("itemShowTypeLink", false);
+
+        recordTypeTextView.setText(showTypeLink ?"Links":"Prompts");
     }
     @Override
     protected void onDestroy() {

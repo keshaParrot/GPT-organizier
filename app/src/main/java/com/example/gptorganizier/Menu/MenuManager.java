@@ -25,7 +25,6 @@ public class MenuManager {
     //Toast.makeText(v.getContext(), "Редагувати: " + item.getHeader(), Toast.LENGTH_SHORT).show();
 
     private final Context context;
-    private View currentView;
     private Dialog dialog;
     private final DatabaseService databaseService;
     private static MenuManager instance;
@@ -48,9 +47,9 @@ public class MenuManager {
         return instance;
     }
 
-    public void showConfirmDialog(Long id, String message, ConfirmDialogListener listener) {
+    public void showConfirmDialog(String message, ConfirmDialogListener listener) {
         dialog = new Dialog(context);
-        currentView = LayoutInflater.from(context).inflate(R.layout.confirm_dialog, null);
+        View currentView = LayoutInflater.from(context).inflate(R.layout.confirm_dialog, null);
         dialog.setContentView(currentView);
 
 
@@ -59,24 +58,18 @@ public class MenuManager {
         TextView confirmMessage = currentView.findViewById(R.id.confirm_menu_message);
         confirmMessage.setText("Are you sure you want to "+message+"?");
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                listener.onDialogResult(false);
-            }
+        cancelButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            listener.onDialogResult(false);
         });
 
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                listener.onDialogResult(true);
-            }
+        acceptButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            listener.onDialogResult(true);
         });
         dialog.show();
     }
-    public void showEditRecordMenu(Long id) {
+    public void showEditRecordMenu(Long id) { //TODO this give crash
         Dialog dialog = new Dialog(context);
         View view = LayoutInflater.from(context).inflate(R.layout.open_record_dialog, null);
         dialog.setContentView(view);
@@ -98,24 +91,16 @@ public class MenuManager {
         createDateText.setText(RecordAdapter.formatDate(record.getCreateDate()));
 
 
-        closeButton.setOnClickListener(v -> {
-            showConfirmDialog(null, "exit", new ConfirmDialogListener() {
-                @Override
-                public void onDialogResult(boolean accepted) {
-                    if (accepted) {
-                        dialog.dismiss();
-                    }
-                }
-            });
-        });
+        closeButton.setOnClickListener(v -> showConfirmDialog("exit", accepted -> {
+            if (accepted) {
+                dialog.dismiss();
+            }
+        }));
 
         deleteButton.setOnClickListener(v -> {
-            showConfirmDialog(id, "delete", new ConfirmDialogListener() {
-                @Override
-                public void onDialogResult(boolean accepted) {
-                    if (accepted) {
-                        databaseService.delete(id);
-                    }
+            showConfirmDialog("delete", accepted -> {
+                if (accepted) {
+                    databaseService.delete(id);
                 }
             });
             dialog.dismiss();
@@ -155,16 +140,11 @@ public class MenuManager {
         ImageButton closeButton = view.findViewById(R.id.close_button);
         ImageButton saveButton = view.findViewById(R.id.save_button);
 
-        closeButton.setOnClickListener(v -> {
-            showConfirmDialog(null, "exit", new ConfirmDialogListener() {
-                @Override
-                public void onDialogResult(boolean accepted) {
-                    if (accepted) {
-                        dialog.dismiss();
-                    }
-                }
-            });
-        });
+        closeButton.setOnClickListener(v -> showConfirmDialog("exit", accepted -> {
+            if (accepted) {
+                dialog.dismiss();
+            }
+        }));
 
         saveButton.setOnClickListener(v -> {
             if (headerInput.getText().toString().isEmpty() && StringUtils.isLongerThan(40,headerInput.getText().toString())) {

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.gptorganizier.MainActivity;
 import com.example.gptorganizier.domain.TypeOfRecord;
 import com.example.gptorganizier.domain.Record;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -40,12 +41,12 @@ public class DatabaseService extends SQLiteOpenHelper {
     private static final String COLUMN_TYPE = "type";
 
     private final GoogleDriveSyncService driveHelper;
-    private final Context context;
+    private Context context;
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
     public static synchronized DatabaseService getInstance(Context context, GoogleAccountCredential credential) {
         if (instance == null) {
-            instance = new DatabaseService(context.getApplicationContext(), credential);
+            instance = new DatabaseService(context, credential);
         }
         return instance;
     }
@@ -98,6 +99,7 @@ public class DatabaseService extends SQLiteOpenHelper {
 
         db.insert(TABLE_RECORDS, null, values);
         synchronizeDatabase();
+        ((MainActivity) context).updateAdapter();
         db.close();
     }
     public void update(Record record) {
@@ -112,9 +114,16 @@ public class DatabaseService extends SQLiteOpenHelper {
 
         db.update(TABLE_RECORDS, values, COLUMN_ID + " = ?", new String[]{String.valueOf(record.getId())});
         synchronizeDatabase();
+        ((MainActivity) context).updateAdapter();
         db.close();
     }
-
+    public void delete(Long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_RECORDS, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        synchronizeDatabase();
+        ((MainActivity) context).updateAdapter();
+        db.close();
+    }
     public Record getById(Long recordId) {
         Record record = null;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -239,13 +248,6 @@ public class DatabaseService extends SQLiteOpenHelper {
         cursor.close();
         return records;
     }
-
-    public void delete(Long id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_RECORDS, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
-        synchronizeDatabase();
-        db.close();
-    }
     private String getDatabaseHash(String databasePath) {
         try {
             File file = new File(databasePath);
@@ -275,6 +277,15 @@ public class DatabaseService extends SQLiteOpenHelper {
     }
 
     public void synchronizeDatabase() {
+        /*
+            taking 2 database
+            check hash of both db
+            if different, check all records
+            leave only which have last edit date
+            upload
+        
+         */
+
         String localDatabasePath = context.getDatabasePath(DATABASE_NAME).getAbsolutePath();
         String localHash = getDatabaseHash(localDatabasePath);
 
