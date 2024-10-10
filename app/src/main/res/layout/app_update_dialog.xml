@@ -18,16 +18,15 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/confirm_dialog_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="Confirm "
-                android:maxWidth="200dp"
-                android:maxHeight="100dp"
+                android:text="@string/available_version_is"
                 android:textColor="@color/white"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +40,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="24dp"
-                android:text="Are you sure you want to ?"
+                android:text="Do you want to update application now?"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/confirm_dialog_header"
@@ -49,18 +48,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/confirm_dialog_header" />
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/confirm_dialog_message">
 
                 <Button
-                    android:id="@+id/cancel_dialog_button"
+                    android:id="@+id/download_update_button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="16dp"
@@ -68,14 +66,14 @@
                     android:layout_weight="1"
                     android:backgroundTint="#212121"
                     android:padding="12dp"
-                    android:text="@string/cancel"
+                    android:text="@string/download"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     app:strokeColor="#666666"
                     app:strokeWidth="2dp" />
 
                 <Button
-                    android:id="@+id/accept_dialog_button"
+                    android:id="@+id/close_dialog_button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="14dp"
@@ -83,13 +81,41 @@
                     android:layout_weight="1"
                     android:backgroundTint="#212121"
                     android:padding="12dp"
-                    android:text="@string/accept"
+                    android:text="@string/later"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     app:strokeColor="#666666"
                     app:strokeWidth="2dp" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                <Button
+                    android:id="@+id/disable_update_reminder_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/grey"
+                    android:padding="12dp"
+                    android:text="@string/don_t_remind_me_to_update"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:strokeColor="#666666"
+                    app:strokeWidth="2dp" />
+            </LinearLayout>
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

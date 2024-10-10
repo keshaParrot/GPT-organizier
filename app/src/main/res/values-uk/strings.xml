@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GPT organizier</string>
+    <string name="prompt">Промпт</string>
+    <string name="link">Посилання</string>
+    <string name="cancel">Скасувати</string>
+    <string name="accept">Прийняти</string>
+    <string name="start_without_loggining_in">Почати без автентифікації</string>
+    <string name="links">Посилання</string>
+    <string name="log_out">Вийти</string>
+    <string name="type_of_record">Тип запису</string>
+    <string name="header">Заголовок</string>
+    <string name="create_date">Створено</string>
+    <string name="delete_record_accept">Чи ти справді хочеш видалити запис?</string>
+    <string name="exit_menu">Чи ти справді хочеш вийти?</string>
+</resources>

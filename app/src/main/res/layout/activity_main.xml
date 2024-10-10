@@ -128,6 +128,21 @@
                 app:strokeColor="#666666"
                 android:text="@string/links"/>
         </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/update_app_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/application_updated_24dp"
+                android:backgroundTint="@color/light_grey"
+                android:layout_margin="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

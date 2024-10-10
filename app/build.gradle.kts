@@ -5,17 +5,26 @@ plugins {
 }
 
 android {
-    namespace = "com.example.gptorganizier"
+    namespace = "com.keshaparrot.gptorganizier"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.gptorganizier"
+        applicationId = "com.keshaparrot.gptorganizier"
         minSdk = 30
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments(
+                    mapOf(
+                        "room.schemaLocation" to "$projectDir/schemas"
+                    )
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -72,4 +81,8 @@ dependencies {
     // For using NetHttpTransport
     implementation("com.google.http-client:google-http-client-gson:1.39.2")
     implementation("com.google.http-client:google-http-client:1.39.2")
+
+    //database room
+    annotationProcessor("androidx.room:room-compiler:2.5.1")
+    implementation("androidx.room:room-rxjava3:2.5.1")
 }

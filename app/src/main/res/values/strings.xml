@@ -11,6 +11,31 @@
     <string name="type_of_record">type of record</string>
     <string name="header">Header</string>
     <string name="create_date">create date</string>
+    <string name="delete_record_accept">Are you sure you want to delete record?</string>
+    <string name="exit_menu">Are you sure you want to exit?</string>
+    <string name="log_out_message">Are you sure you want to log out?</string>
+    <string name="success_delete_record">Record was deleted successfully</string>
+    <string name="success_edit_record">Record was changed successfully</string>
+    <string name="success_create_record">Record was created successfully</string>
+    <string name="success_log_in">Authentication success</string>
+    <string name="content">Content</string>
+    <string name="description">Description</string>
+    <string name="created_on">Created on</string>
+    <string name="header_error_empty">Header cannot be empty</string>
+    <string name="header_error_long">Header should be shorter than 40 characters</string>
+    <string name="content_error_empty">Content cannot be empty</string>
+    <string name="description_error_long">Description should be shorter than 70 characters</string>
+    <string name="download">download</string>
+    <string name="later">later</string>
+    <string name="don_t_remind_me_to_update">Don\'t remind me to update</string>
+    <string name="your_version_is">Your version is</string>
+    <string name="close">close</string>
+    <string name="available_version_is">Available version is</string>
+    <string name="reminder_update_skip_until_new_version">Alright, we won\'t remind you to update the app until the next version is released</string>
+    <string name="skip">skip</string>
+    <string name="log_in_message">Save your links and prompt in cloud</string>
+    <string name="database_dowload_erros">Помилка при завантаженні бази</string>
+    <string name="database_dowload_success">База даних завантажена</string>
 
     <string-array name="record_type_items">
         <item>Prompt</item>

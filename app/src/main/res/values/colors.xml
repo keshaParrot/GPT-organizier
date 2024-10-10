@@ -5,4 +5,5 @@
     <color name="light_grey">#b4b4b4</color>
     <color name="background">#212121</color>
     <color name="light_dark">#171717</color>
+    <color name="grey">#606060</color>
 </resources>
