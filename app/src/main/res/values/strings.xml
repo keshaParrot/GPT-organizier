@@ -34,8 +34,8 @@
     <string name="reminder_update_skip_until_new_version">Alright, we won\'t remind you to update the app until the next version is released</string>
     <string name="skip">skip</string>
     <string name="log_in_message">Save your links and prompt in cloud</string>
-    <string name="database_dowload_erros">Помилка при завантаженні бази</string>
-    <string name="database_dowload_success">База даних завантажена</string>
+    <string name="database_dowload_erros">Error loading the database</string>
+    <string name="database_dowload_success">The database is loaded</string>
 
     <string-array name="record_type_items">
         <item>Prompt</item>

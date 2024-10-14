@@ -58,7 +58,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 File localDb = getDatabasePath("records.db");
                 if (!localDb.exists()) {
                     try {
-                        GoogleDriveSyncService.getInstance(this).downloadDatabaseFromGoogleDrive();
+                        GoogleDriveSyncService.getInstance(this).syncGetDatabase();
                         Toast.makeText(this, R.string.database_dowload_success, Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();

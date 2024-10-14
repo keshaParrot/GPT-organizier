@@ -6,9 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.FileList;
 
+import java.io.IOException;
 import java.util.Collections;
 
 public class GoogleAuthService {
@@ -17,9 +22,11 @@ public class GoogleAuthService {
     private GoogleAccountCredential credential;
     public static final int REQUEST_CODE_SIGN_IN = 100;
 
+    private static final String[] SCOPES = {DriveScopes.DRIVE_FILE};
+
     private GoogleAuthService(Context context) {
         credential = GoogleAccountCredential.usingOAuth2(
-                context.getApplicationContext(), Collections.singletonList(DriveScopes.DRIVE_FILE));
+                context.getApplicationContext(), Collections.singletonList(SCOPES[0]));
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("YourAppPrefs", Context.MODE_PRIVATE);
         String accountName = sharedPreferences.getString("accountName", null);
@@ -59,6 +66,7 @@ public class GoogleAuthService {
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("YourAppPrefs", Context.MODE_PRIVATE);
             sharedPreferences.edit().putString("accountName", accountName).apply();
+            GoogleDriveSyncService.getInstance().syncGetDatabase();
         } else {
             Log.d("GoogleAuthService", "Login failed or canceled.");
         }

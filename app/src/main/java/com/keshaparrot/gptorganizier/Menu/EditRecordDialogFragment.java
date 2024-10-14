@@ -29,9 +29,6 @@ import java.util.Date;
 
 public class EditRecordDialogFragment extends DialogFragment {
 
-    //TODO also check sync service
-    //TODO we need to change style of input fields, add some text before fields
-
     private Long recordId;
     private RecordViewModel recordViewModel;
     private RecordObserverListener recordObserverListener;
@@ -125,7 +122,6 @@ public class EditRecordDialogFragment extends DialogFragment {
             }
         });
     }
-    //TODO make more validate
     private boolean validateInputs(EditText headerInput, EditText contentInput, EditText descriptionInput) {
         if (headerInput.getText().toString().isEmpty()) {
             headerInput.setError(getString(R.string.header_error_empty));

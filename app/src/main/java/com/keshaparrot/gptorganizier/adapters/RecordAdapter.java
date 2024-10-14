@@ -27,19 +27,29 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
+/**
+ * Adapter for displaying a list of records in a RecyclerView.
+ * Handles the binding of data to views and manages click events for editing and opening content.
+ */
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder> {
 
     private List<Record> itemList;
     private final ContentExchangeService contentExchangeService;
     private int expandedPosition = RecyclerView.NO_POSITION;
 
+    /**
+     * Constructor for the RecordAdapter.
+     *
+     * @param contentExchangeService service for exchanging content
+     */
     public RecordAdapter(ContentExchangeService contentExchangeService) {
         itemList = new ArrayList<>();
         this.contentExchangeService = contentExchangeService;
     }
 
-
+    /**
+     * ViewHolder class for holding the views for each record item.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView headerText;
         public TextView createDateText;
@@ -58,6 +68,12 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
             recordMarked = view.findViewById(R.id.item_bookmark);
         }
     }
+
+    /**
+     * Updates the list of records with a new list and sorts it.
+     *
+     * @param newList the new list of records
+     */
     public void updateList(List<Record> newList) {
         newList.sort(Comparator.comparing(Record::isMarked).reversed()
                 .thenComparing(Record::getCreateDate));
@@ -156,10 +172,22 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         return itemList.size();
     }
 
+    /**
+     * Formats a Date object into a string.
+     *
+     * @param date the Date object to format
+     * @return the formatted date as a String
+     */
     public static String formatDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM", Locale.getDefault());
         return dateFormat.format(date);
     }
+    /**
+     * Returns the visibility state based on the boolean value.
+     *
+     * @param state The boolean value to check.
+     * @return View.VISIBLE if true, View.GONE if false.
+     */
     private int getVisibilityStateByBool(boolean state){
         return state? View.VISIBLE : View.GONE;
     }

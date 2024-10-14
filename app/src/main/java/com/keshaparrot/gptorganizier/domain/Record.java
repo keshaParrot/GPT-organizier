@@ -42,6 +42,16 @@ public class Record {
         this.type = convertType(type);
         this.marked = marked;
     }
+    @Ignore
+    public Record(Long id, String header, String content, String description, Date createDate, Date updateTime, TypeOfRecord type) {
+        this.id = id;
+        this.header = header;
+        this.content = content;
+        this.description = description;
+        this.createDate = createDate;
+        this.updateTime = updateTime;
+        this.type = type;
+    }
 
     /**
      * Converts a string representation of the type of record provided by the user

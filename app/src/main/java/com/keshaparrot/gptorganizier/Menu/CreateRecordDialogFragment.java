@@ -70,8 +70,6 @@ public class CreateRecordDialogFragment extends DialogFragment {
     }
 
     private void setupRecordTypeSpinner(Spinner recordTypeSpinner) {
-        //TODO implement here layout item
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.record_type_items, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

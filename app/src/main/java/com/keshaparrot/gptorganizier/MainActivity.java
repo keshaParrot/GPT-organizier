@@ -48,14 +48,6 @@ public class MainActivity extends AppCompatActivity implements RecordObserverLis
     private UpdateService updateService;
     private ActivityResultLauncher<Intent> signInLauncher;
 
-    //TODO SYNC
-    //update
-    //adapter
-    //side bar update
-    //sync ver0
-
-    //TODO знову воно сука не логує до гугл акаунта
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +98,8 @@ public class MainActivity extends AppCompatActivity implements RecordObserverLis
 
         ImageButton newRecordButton = findViewById(R.id.create_record_button);
         newRecordButton.setOnClickListener(view -> new CreateRecordDialogFragment().show(getSupportFragmentManager(), "CreateRecordDialog"));
+
+        GoogleDriveSyncService.getInstance(this).syncGetDatabase();
 
         Log.d("is logged in user?", String.valueOf(GoogleAuthService.getInstance().isLoggedIn()));
     }
@@ -161,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements RecordObserverLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GoogleAuthService.REQUEST_CODE_SIGN_IN) {
             GoogleAuthService.getInstance().handleSignInResult(resultCode, data, this);
-            //TODO download DB from drive here
+
         }
     }
     @Override
@@ -172,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements RecordObserverLis
     protected void onPause() {
         super.onPause();
         try {
-            GoogleDriveSyncService.getInstance(this).syncWithGoogleDrive();
+            GoogleDriveSyncService.getInstance().syncSendDatabase();
         } catch (Exception e) {
             e.printStackTrace();
         }

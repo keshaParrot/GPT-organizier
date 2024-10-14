@@ -31,4 +31,7 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return instance;
     }
+    public static void setInstance(AppDatabase testInstance) {
+        instance = testInstance;
+    }
 }
