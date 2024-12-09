@@ -17,6 +17,8 @@ GPT Organizer is an Android application designed to store and manage links to Ch
 - Programming Language: Java
 - Development Environment: Android Studio
 - Platform: Android
+- Json: used for parse data into json, and store them in Google drive
+- google api: used for user authentication and give access them store data in their google drive
 
 ## Installation
 
