@@ -63,7 +63,7 @@ public class DatabaseService {
      * @param context the application context
      * @return the GoogleDriveSyncService instance
      */
-    private GoogleDriveSyncService getSyncService(Context context) {
+    private GoogleDriveSyncService getSyncService(Context context) throws Exception {
         if (googleDriveSyncService == null) {
             googleDriveSyncService = GoogleDriveSyncService.getInstance(context);
         }

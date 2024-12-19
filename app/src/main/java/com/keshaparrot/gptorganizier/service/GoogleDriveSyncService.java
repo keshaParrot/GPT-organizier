@@ -32,7 +32,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class GoogleDriveSyncService {
-
+//TODO idk why but code not create file with db
     private static final String TAG = "GoogleDriveSyncService";
     private static final String DATABASE_FILE_NAME = "records.json";
     private static final String DATABASE_FOLDER_NAME = "GPT organizer data";
@@ -43,8 +43,9 @@ public class GoogleDriveSyncService {
     private final Drive googleDriveService;
     private final GoogleAccountCredential googleAccountCredential;
     private final Context context;
+    private final JsonSecurityUtils jsonSecurityUtils;
 
-    private GoogleDriveSyncService(Context context)  {
+    private GoogleDriveSyncService(Context context) throws Exception {
         this.context = context;
         GoogleAuthService googleAuthService = GoogleAuthService.getInstance();
         this.googleAccountCredential = googleAuthService.getCredential();
@@ -56,9 +57,10 @@ public class GoogleDriveSyncService {
         builder.setApplicationName(context.getString(R.string.app_name));
         this.googleDriveService = builder.build();
         this.databaseService = DatabaseService.getInstance(context);
+        this.jsonSecurityUtils = new JsonSecurityUtils();
     }
 
-    public static synchronized GoogleDriveSyncService getInstance(Context context){
+    public static synchronized GoogleDriveSyncService getInstance(Context context) throws Exception {
         if (instance == null) {
             instance = new GoogleDriveSyncService(context);
         }
@@ -230,10 +232,17 @@ public class GoogleDriveSyncService {
     }
 
     private List<Record> parseJsonToDataList(InputStream inputStream) {
-        try (Reader reader = new InputStreamReader(inputStream)) {
-            Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Record>>() {}.getType();
-            return gson.fromJson(reader, listType);
+        try  {
+            StringBuilder builder = new StringBuilder();
+            try (Reader reader = new InputStreamReader(inputStream)) {
+                char[] buffer = new char[1024];
+                int read;
+                while ((read = reader.read(buffer)) != -1) {
+                    builder.append(buffer, 0, read);
+                }
+            }
+
+            return jsonSecurityUtils.decrypt(builder.toString(), new TypeToken<List<Record>>() {}.getType());
         } catch (Exception e) {
             Log.e(TAG, "Error parsing JSON to Data list: " + e.getMessage());
             return new ArrayList<>();
@@ -241,20 +250,21 @@ public class GoogleDriveSyncService {
     }
 
     private java.io.File packDataIntoJson(List<Record> sortedRecords) {
-        Gson gson = new Gson();
+        try {
+            String encryptedJson = jsonSecurityUtils.encrypt(sortedRecords);
 
-        String json = gson.toJson(sortedRecords);
+            java.io.File jsonFile = new java.io.File(context.getCacheDir(), DATABASE_FILE_NAME);
 
-        java.io.File jsonFile = new java.io.File(context.getCacheDir(), DATABASE_FILE_NAME);
+            try (FileOutputStream fos = new FileOutputStream(jsonFile)) {
+                fos.write(encryptedJson.getBytes());
+                Log.d(TAG, "Encrypted data saved to file: " + jsonFile.getAbsolutePath());
+            }
 
-        try (FileOutputStream fos = new FileOutputStream(jsonFile)) {
-            fos.write(json.getBytes());
-            Log.d(TAG, "Data saved to JSON file: " + jsonFile.getAbsolutePath());
-
-        } catch (IOException e) {
-            Log.e(TAG, "Error writing JSON file: " + e.getMessage());
+            return jsonFile;
+        } catch (Exception e) {
+            Log.e(TAG, "Error writing encrypted JSON file: " + e.getMessage());
+            return null;
         }
-        return jsonFile;
     }
 
     public interface DownloadCallback {

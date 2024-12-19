@@ -64,7 +64,11 @@ public class MainActivity extends AppCompatActivity implements RecordObserverLis
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         GoogleAuthService googleAuthService = GoogleAuthService.getInstance(this);
-                        googleAuthService.handleSignInResult(result.getResultCode(), result.getData(), this);
+                        try {
+                            googleAuthService.handleSignInResult(result.getResultCode(), result.getData(), this);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     } else {
                         Log.d("MainActivity", "Login failed or canceled.");
                     }
@@ -98,8 +102,12 @@ public class MainActivity extends AppCompatActivity implements RecordObserverLis
 
         ImageButton newRecordButton = findViewById(R.id.create_record_button);
         newRecordButton.setOnClickListener(view -> new CreateRecordDialogFragment().show(getSupportFragmentManager(), "CreateRecordDialog"));
+        try{
+            GoogleDriveSyncService.getInstance(this).syncGetDatabase();
 
-        GoogleDriveSyncService.getInstance(this).syncGetDatabase();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         Log.d("is logged in user?", String.valueOf(GoogleAuthService.getInstance().isLoggedIn()));
     }
@@ -154,7 +162,11 @@ public class MainActivity extends AppCompatActivity implements RecordObserverLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GoogleAuthService.REQUEST_CODE_SIGN_IN) {
-            GoogleAuthService.getInstance().handleSignInResult(resultCode, data, this);
+            try {
+                GoogleAuthService.getInstance().handleSignInResult(resultCode, data, this);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 
         }
     }

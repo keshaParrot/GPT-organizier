@@ -58,7 +58,7 @@ public class GoogleAuthService {
         activity.startActivityForResult(signInIntent, requestCode);
     }
 
-    public void handleSignInResult(int resultCode, Intent data, Context context) {
+    public void handleSignInResult(int resultCode, Intent data, Context context) throws Exception {
         if (resultCode == Activity.RESULT_OK && data != null && data.getExtras() != null) {
             String accountName = data.getStringExtra("authAccount");
             credential.setSelectedAccountName(accountName);
@@ -66,7 +66,7 @@ public class GoogleAuthService {
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("YourAppPrefs", Context.MODE_PRIVATE);
             sharedPreferences.edit().putString("accountName", accountName).apply();
-            GoogleDriveSyncService.getInstance().syncGetDatabase();
+            GoogleDriveSyncService.getInstance(context).syncGetDatabase();
         } else {
             Log.d("GoogleAuthService", "Login failed or canceled.");
         }

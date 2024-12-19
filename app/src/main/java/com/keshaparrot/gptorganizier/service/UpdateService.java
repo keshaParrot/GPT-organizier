@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+
 import androidx.annotation.NonNull;
 
 import com.keshaparrot.gptorganizier.MainActivity;
@@ -25,6 +26,19 @@ import java.net.URL;
 public class UpdateService {
 
     //TODO check and implement here UI
+
+
+    //TODO
+    // при ініціалізації класи, якшо userwantgetremind true, виконується метода checkupdate, яка кидає екран апдейту і міняє шаред преференсес на needupdate true
+    // потім при натисканні апдейт виконуєьбся метода, яка завантажує апдейт і міняє версію
+    // в випадку відмови просто закривається меню
+    // в випадку червоноі кнопки окрім закривання ще й userwantgetremind ставиться на false
+
+    //TODO check update
+    // version will be in json or in build
+    // userwantgetremind get enable disable
+    // needupdate get set
+    // download update
 
     private static final String TAG = "UpdateService";
     private Context context;

@@ -53,7 +53,11 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GoogleAuthService.REQUEST_CODE_SIGN_IN) {
             GoogleAuthService googleAuthService = GoogleAuthService.getInstance(this);
-            googleAuthService.handleSignInResult(resultCode, data, this);
+            try {
+                googleAuthService.handleSignInResult(resultCode, data, this);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             if (resultCode == RESULT_OK) {
                 File localDb = getDatabasePath("records.db");
                 if (!localDb.exists()) {

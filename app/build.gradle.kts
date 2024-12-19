@@ -12,8 +12,9 @@ android {
         applicationId = "com.keshaparrot.gptorganizier"
         minSdk = 30
         targetSdk = 34
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
@@ -57,33 +58,32 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     testImplementation(libs.junit)
-    testImplementation("org.mockito:mockito-core:5.14.1")
-    testImplementation("org.robolectric:robolectric:4.9.1")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.core.testing)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("com.google.android.material:material:1.6.0")
+    implementation(libs.recyclerview)
+    implementation(libs.material.v160)
 
-    implementation("androidx.cardview:cardview:1.0.0")
-    compileOnly("org.projectlombok:lombok:1.18.34")
-    annotationProcessor("org.projectlombok:lombok:1.18.26")
-    implementation("com.google.code.gson:gson:2.8.9")
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok.v11826)
+    implementation(libs.gson)
 
 
     // Google Drive API
-    implementation("com.google.api-client:google-api-client-android:1.32.1")
-    implementation("com.google.apis:google-api-services-drive:v3-rev197-1.25.0")
+    implementation(libs.google.api.client.android.v1321)
+    implementation(libs.google.api.services.drive.vv3rev1971250)
 
     // Google Authentication
-    implementation("com.google.android.gms:play-services-auth:19.2.0")
+    implementation(libs.play.services.auth.v1920)
 
     // For using NetHttpTransport
-    implementation("com.google.http-client:google-http-client-gson:1.39.2")
-    implementation("com.google.http-client:google-http-client:1.39.2")
+    implementation(libs.google.http.client.gson)
+    implementation(libs.google.http.client)
 
     //database room
-    annotationProcessor("androidx.room:room-compiler:2.5.1")
-    implementation("androidx.room:room-rxjava3:2.5.1")
+    annotationProcessor(libs.room.compiler)
+    implementation(libs.room.rxjava3)
 }
